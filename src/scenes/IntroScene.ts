@@ -90,7 +90,6 @@ export default class IntroScene extends Phaser.Scene
 
     update(time: number, delta: number): void 
     {
-        // if(this.cursors?.left.isDown)
-        //     this.cameras.main.setPosition(this.cameras.main.x - 20, this.cameras.main.y);
+        this.components.update(delta);
     }
 }
