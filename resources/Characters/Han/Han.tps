@@ -173,12 +173,21 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
-            <key type="filename">Han_idle_ 01.png</key>
-            <key type="filename">Han_idle_ 02.png</key>
-            <key type="filename">Han_idle_ 03.png</key>
-            <key type="filename">Han_idle_ 04.png</key>
-            <key type="filename">Han_idle_ 05.png</key>
-            <key type="filename">Han_idle_ 06.png</key>
+            <key type="filename">Han_idle_01.png</key>
+            <key type="filename">Han_idle_02.png</key>
+            <key type="filename">Han_idle_03.png</key>
+            <key type="filename">Han_idle_04.png</key>
+            <key type="filename">Han_idle_05.png</key>
+            <key type="filename">Han_idle_06.png</key>
+            <key type="filename">Han_run_01.png</key>
+            <key type="filename">Han_run_02.png</key>
+            <key type="filename">Han_run_03.png</key>
+            <key type="filename">Han_run_04.png</key>
+            <key type="filename">Han_run_05.png</key>
+            <key type="filename">Han_run_06.png</key>
+            <key type="filename">Han_run_07.png</key>
+            <key type="filename">Han_run_08.png</key>
+            <key type="filename">Han_run_09.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -196,12 +205,21 @@
         </map>
         <key>fileList</key>
         <array>
-            <filename>Han_idle_ 01.png</filename>
-            <filename>Han_idle_ 02.png</filename>
-            <filename>Han_idle_ 03.png</filename>
-            <filename>Han_idle_ 04.png</filename>
-            <filename>Han_idle_ 05.png</filename>
-            <filename>Han_idle_ 06.png</filename>
+            <filename>Han_idle_01.png</filename>
+            <filename>Han_idle_02.png</filename>
+            <filename>Han_idle_03.png</filename>
+            <filename>Han_idle_04.png</filename>
+            <filename>Han_idle_05.png</filename>
+            <filename>Han_idle_06.png</filename>
+            <filename>Han_run_01.png</filename>
+            <filename>Han_run_02.png</filename>
+            <filename>Han_run_03.png</filename>
+            <filename>Han_run_04.png</filename>
+            <filename>Han_run_05.png</filename>
+            <filename>Han_run_06.png</filename>
+            <filename>Han_run_07.png</filename>
+            <filename>Han_run_08.png</filename>
+            <filename>Han_run_09.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

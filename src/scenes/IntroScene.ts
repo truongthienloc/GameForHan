@@ -1,11 +1,16 @@
 import Phaser from "phaser";
+import ComponentService from "~/utils/ComponentService";
+
+import HanController from "~/characters/Han/HanController";
 
 import * as config from "../configs/configMap01";
 
 export default class IntroScene extends Phaser.Scene
 {
     private player?: Phaser.Physics.Arcade.Sprite;
-    private cursors?: Phaser.Types.Input.Keyboard.CursorKeys;
+    private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
+
+    private components!: ComponentService;
 
     constructor() 
     {
@@ -15,6 +20,7 @@ export default class IntroScene extends Phaser.Scene
     init(): void 
     {
         this.cursors = this.input.keyboard.createCursorKeys();
+        this.components = new ComponentService();
     }
 
     create(): void 
@@ -54,22 +60,31 @@ export default class IntroScene extends Phaser.Scene
             config.TILE_WIDTH_GAME, config.TILE_WIDTH_GAME, "background_livingroom"
         );
 
-        // TODO: Get object
+        // TODO: Get character
         const objects = map.getObjectLayer("objects");
         const obj = objects.objects[0];
         const { x: mx = 0, y: my = 0 } = obj;
         
         const x = mx * config.mulPx;
         const y = my * config.mulPx;
-        //console.log(x, y);
+        
         this.player = this.physics.add.sprite(x, y, "Han")
             .setScale(config.SCALE_CHAR);
+        this.components.addComponent(this.player, new HanController(this));
         
         this.physics.add.collider(platform, this.player);
 
         // TODO: Change background color
         this.cameras.main.setBackgroundColor(0xd8d8d8);
-        this.cameras.main.startFollow(this.player);
+
+        // TODO: Set up camera
+        const MAP_WIDTH = map.width * config.TILE_WIDTH_GAME;
+        const MAP_HEIGHT = map.height * config.TILE_WIDTH_GAME;
+
+        this.cameras.main.startFollow(this.player, true);
+        this.cameras.main.setBounds(0, 0, MAP_WIDTH, MAP_HEIGHT);
+        // this.cameras.main.useBounds = true;
+        // this.physics.world.setBounds(0, 0, MAP_WIDTH, MAP_HEIGHT);
         
     }
 
