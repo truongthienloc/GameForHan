@@ -2,8 +2,12 @@ import Phaser from "phaser";
 import ComponentService from "~/utils/ComponentService";
 
 import HanController from "~/characters/Han/HanController";
+import HanBody from "~/characters/Han/HanBody";
 
-import * as config from "../configs/configMap01";
+import * as configMap from "../configs/configMap01";
+import * as configChar from "../configs/configCharacter";
+
+import { debugDraw } from "~/utils/debug";
 
 export default class IntroScene extends Phaser.Scene
 {
@@ -27,7 +31,7 @@ export default class IntroScene extends Phaser.Scene
     {
         // TODO: Create map & scale map
         const map = this.make.tilemap({ key: "Map01_House" });
-        map.setBaseTileSize(config.TILE_WIDTH_GAME, config.TILE_WIDTH_GAME);
+        map.setBaseTileSize(configMap.TILE_WIDTH_GAME, configMap.TILE_WIDTH_GAME);
 
         // TODO: Create tiles
         const tileHousePlatformer = map.addTilesetImage("House-tileset", "house_platformer");
@@ -54,10 +58,10 @@ export default class IntroScene extends Phaser.Scene
             tileHousePlatformer, tileBedroom, tileLivingroom
         ]).setCollisionByProperty({ collides: true });
 
-        map.setLayerTileSize(config.TILE_WIDTH_GAME, config.TILE_WIDTH_GAME, "platform");
-        map.setLayerTileSize(config.TILE_WIDTH_GAME, config.TILE_WIDTH_GAME, "background_bedroom");
+        map.setLayerTileSize(configMap.TILE_WIDTH_GAME, configMap.TILE_WIDTH_GAME, "platform");
+        map.setLayerTileSize(configMap.TILE_WIDTH_GAME, configMap.TILE_WIDTH_GAME, "background_bedroom");
         map.setLayerTileSize(
-            config.TILE_WIDTH_GAME, config.TILE_WIDTH_GAME, "background_livingroom"
+            configMap.TILE_WIDTH_GAME, configMap.TILE_WIDTH_GAME, "background_livingroom"
         );
 
         // TODO: Get character
@@ -65,21 +69,23 @@ export default class IntroScene extends Phaser.Scene
         const obj = objects.objects[0];
         const { x: mx = 0, y: my = 0 } = obj;
         
-        const x = mx * config.mulPx;
-        const y = my * config.mulPx;
+        const x = mx * configMap.mulPx;
+        const y = my * configMap.mulPx;
         
         this.player = this.physics.add.sprite(x, y, "Han")
-            .setScale(config.SCALE_CHAR);
+            .setScale(configChar.SCALE_CHAR);
+        this.components.addComponent(this.player, new HanBody);
         this.components.addComponent(this.player, new HanController(this));
         
-        this.physics.add.collider(platform, this.player);
+        this.physics.add.collider(this.player, platform);
+        debugDraw(platform, this);
 
         // TODO: Change background color
         this.cameras.main.setBackgroundColor(0xd8d8d8);
 
         // TODO: Set up camera
-        const MAP_WIDTH = map.width * config.TILE_WIDTH_GAME;
-        const MAP_HEIGHT = map.height * config.TILE_WIDTH_GAME;
+        const MAP_WIDTH = map.width * configMap.TILE_WIDTH_GAME;
+        const MAP_HEIGHT = map.height * configMap.TILE_WIDTH_GAME;
 
         this.cameras.main.startFollow(this.player, true);
         this.cameras.main.setBounds(0, 0, MAP_WIDTH, MAP_HEIGHT);

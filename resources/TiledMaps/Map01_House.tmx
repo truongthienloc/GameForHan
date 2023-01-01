@@ -147,8 +147,15 @@
   </tile>
   <tile id="7">
    <properties>
-    <property name="collides" type="bool" value="true"/>
+    <property name="collides" type="bool" value="false"/>
    </properties>
+   <objectgroup draworder="index" id="4">
+    <object id="3" x="-0.209532" y="17.0768" width="30.1725" height="12.7814">
+     <properties>
+      <property name="collides" type="bool" value="true"/>
+     </properties>
+    </object>
+   </objectgroup>
   </tile>
   <tile id="8">
    <properties>

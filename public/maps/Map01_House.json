@@ -402,11 +402,40 @@
                 }, 
                 {
                  "id":7,
+                 "objectgroup":
+                    {
+                     "draworder":"index",
+                     "id":4,
+                     "name":"",
+                     "objects":[
+                            {
+                             "class":"",
+                             "height":12.781427119674,
+                             "id":3,
+                             "name":"",
+                             "properties":[
+                                    {
+                                     "name":"collides",
+                                     "type":"bool",
+                                     "value":true
+                                    }],
+                             "rotation":0,
+                             "visible":true,
+                             "width":30.1725492661156,
+                             "x":-0.209531592125803,
+                             "y":17.0768247582529
+                            }],
+                     "opacity":1,
+                     "type":"objectgroup",
+                     "visible":true,
+                     "x":0,
+                     "y":0
+                    },
                  "properties":[
                         {
                          "name":"collides",
                          "type":"bool",
-                         "value":true
+                         "value":false
                         }]
                 }, 
                 {
