@@ -24,6 +24,11 @@ export default class IntroScene extends Phaser.Scene {
         this.components = new ComponentService();
     }
 
+    preload(): void {
+        this.scene.run('ui');
+        this.scene.moveAbove(this, 'ui');
+    }
+
     create(): void {
         // TODO: Create map & scale map
         const map = this.make.tilemap({ key: 'Map01_House' });
@@ -104,7 +109,7 @@ export default class IntroScene extends Phaser.Scene {
         debugDraw(platform, this);
 
         // TODO: Change background color
-        this.cameras.main.setBackgroundColor(0xd8d8d8);
+        // this.cameras.main.setBackgroundColor(0xd8d8d8);
 
         // TODO: Set up camera
         const MAP_WIDTH = map.width * configMap.TILE_WIDTH_GAME;
@@ -114,8 +119,6 @@ export default class IntroScene extends Phaser.Scene {
         this.cameras.main.setBounds(0, 0, MAP_WIDTH, MAP_HEIGHT);
         // this.cameras.main.useBounds = true;
         // this.physics.world.setBounds(0, 0, MAP_WIDTH, MAP_HEIGHT);
-
-        this.scene.run('ui');
     }
 
     update(time: number, delta: number): void {

@@ -6,8 +6,8 @@ export default class SpeechBubble {
 
     constructor(scene: Phaser.Scene) {
         this.scene = scene;
-        const x = 0,
-            y = 0;
+        const x = 25,
+            y = 10;
         this.graphics = scene.add.graphics({ x: x, y: y });
     }
 
@@ -16,9 +16,10 @@ export default class SpeechBubble {
     }
 
     public speech(quote: string): void {
+        this.graphics.clear();
         // TODO: config property
-        const width = 800,
-            height = 300;
+        const width = 750,
+            height = 100;
 
         var bubbleWidth = width;
         var bubbleHeight = height;
@@ -73,7 +74,7 @@ export default class SpeechBubble {
 
         var content = this.scene.add.text(0, 0, quote, {
             fontFamily: 'Arial',
-            fontSize: '20',
+            fontSize: '20px',
             color: '#000000',
             align: 'center',
             wordWrap: { width: bubbleWidth - bubblePadding * 2 },
