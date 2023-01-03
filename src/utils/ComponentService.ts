@@ -1,140 +1,128 @@
-import Phaser from 'phaser'
-import short from 'short-uuid'
+import Phaser from 'phaser';
+import short from 'short-uuid';
 
-export type Constructor<T extends {} = {}> = new (...args: any[]) => T
-type GameObject = Phaser.GameObjects.GameObject
+export type Constructor<T extends {} = {}> = new (...args: any[]) => T;
+type GameObject = Phaser.GameObjects.GameObject;
 
-export interface IComponent
-{
-	// NOTE: components were added later
-	init(go: GameObject, components: ComponentService)
+export interface IComponent {
+    // NOTE: components were added later
+    init(go: GameObject, components: ComponentService);
 
-	awake?: () => void
-	start?: () => void
-	update?: (dt: number) => void
+    awake?: () => void;
+    start?: () => void;
+    update?: (dt: number) => void;
 
-	destroy?: () => void
+    destroy?: () => void;
 }
 
 // NOTE: this interface were added later
-export interface IComponentsService
-{
-	addComponent(go: GameObject, component: IComponent)
-	findComponent<ComponentType extends {}>(go: GameObject, componentType: Constructor<ComponentType>): ComponentType | undefined
-	removeComponent(go: GameObject, component: IComponent)
-	removeAllComponents(go: GameObject)
-	destroy()
-	update(dt: number)
+export interface IComponentsService {
+    addComponent(go: GameObject, component: IComponent);
+    findComponent<ComponentType extends {}>(
+        go: GameObject,
+        componentType: Constructor<ComponentType>,
+    ): ComponentType | undefined;
+    removeComponent(go: GameObject, component: IComponent);
+    removeAllComponents(go: GameObject);
+    destroy();
+    update(dt: number);
 }
 
-export default class ComponentService implements IComponentsService
-{
-	private componentsByGameObject = new Map<string, IComponent[]>()
+export default class ComponentService implements IComponentsService {
+    private componentsByGameObject = new Map<string, IComponent[]>();
 
-	private queuedForStart: IComponent[] = []
+    private queuedForStart: IComponent[] = [];
 
-	addComponent(go: GameObject, component: IComponent)
-	{
-		if (!go.name)
-		{
-			// give it an id if not exist
-			go.name = short.generate()
-		}
-		
-		if (!this.componentsByGameObject.has(go.name))
-		{
-			this.componentsByGameObject.set(go.name, [])
-		}
-		
-		const list = this.componentsByGameObject.get(go.name)
-		list!.push(component)
+    addComponent(go: GameObject, component: IComponent) {
+        if (!go.name) {
+            // give it an id if not exist
+            go.name = short.generate();
+        }
 
-		component.init(go, this)
-		if (component.awake)
-		{
-			component.awake()
-		}
+        if (!this.componentsByGameObject.has(go.name)) {
+            this.componentsByGameObject.set(go.name, []);
+        }
 
-		if (component.start)
-		{
-			this.queuedForStart.push(component)
-		}
-	}
+        const list = this.componentsByGameObject.get(go.name);
+        list!.push(component);
 
-	// NOTE: this is new
-	removeComponent(go: GameObject, component: IComponent)
-	{
-		if (!go.name)
-		{
-			return
-		}
+        component.init(go, this);
+        if (component.awake) {
+            component.awake();
+        }
 
-		if (!this.componentsByGameObject.has(go.name))
-		{
-			return
-		}
+        if (component.start) {
+            this.queuedForStart.push(component);
+        }
+    }
 
-		const list = this.componentsByGameObject.get(go.name) as IComponent[]
-		const index = list.findIndex(comp => comp === component)
+    // NOTE: this is new
+    removeComponent(go: GameObject, component: IComponent) {
+        if (!go.name) {
+            return;
+        }
 
-		if (index < 0)
-		{
-			return
-		}
+        if (!this.componentsByGameObject.has(go.name)) {
+            return;
+        }
 
-		list.splice(index, 1)
+        const list = this.componentsByGameObject.get(go.name) as IComponent[];
+        const index = list.findIndex((comp) => comp === component);
 
-		component.destroy?.()
-	}
+        if (index < 0) {
+            return;
+        }
 
-	// NOTE: this is also new
-	removeAllComponents(go: GameObject)
-	{
-		const components = this.componentsByGameObject.get(go.name) ?? []
-		components.forEach(component => {
-			component.destroy?.()
-		})
+        list.splice(index, 1);
 
-		this.componentsByGameObject.delete(go.name)
-	}
+        component.destroy?.();
+    }
 
-	findComponent<ComponentType extends {}>(go: GameObject, componentType: Constructor<ComponentType>)
-	{
-		const components = this.componentsByGameObject.get(go.name) ?? []
-		return components.find(component => component instanceof componentType) as ComponentType | undefined
-	}
+    // NOTE: this is also new
+    removeAllComponents(go: GameObject) {
+        const components = this.componentsByGameObject.get(go.name) ?? [];
+        components.forEach((component) => {
+            component.destroy?.();
+        });
 
-	destroy()
-	{
-		this.componentsByGameObject.forEach(components => {
-			components.forEach(component => {
-				if (component.destroy)
-				{
-					component.destroy()
-				}
-			})
-		})
-	}
+        this.componentsByGameObject.delete(go.name);
+    }
 
-	update(dt: number)
-	{
-		while (this.queuedForStart.length > 0)
-		{
-			const component = this.queuedForStart.shift()
-			if (component && component.start)
-			{
-				component.start()
-			}
-		}
+    findComponent<ComponentType extends {}>(
+        go: GameObject,
+        componentType: Constructor<ComponentType>,
+    ) {
+        const components = this.componentsByGameObject.get(go.name) ?? [];
+        return components.find(
+            (component) => component instanceof componentType,
+        ) as ComponentType | undefined;
+    }
 
-		this.componentsByGameObject.forEach(components => {
-			// NOTE: new, create shallow copy for added remove
-			components.slice().forEach(component => {
-				if (component.update)
-				{
-					component.update(dt)
-				}
-			})
-		})
-	}
+    destroy() {
+        this.componentsByGameObject.forEach((components) => {
+            components.forEach((component) => {
+                if (component.destroy) {
+                    component.destroy();
+                }
+            });
+        });
+    }
+
+    update(dt: number) {
+        while (this.queuedForStart.length > 0) {
+            const component = this.queuedForStart.shift();
+            if (component && component.start) {
+                component.start();
+            }
+        }
+
+        this.componentsByGameObject.forEach((components) => {
+            // NOTE: new, create shallow copy for added remove
+            components.slice().forEach((component) => {
+                if (component.update) {
+                    component.update(dt);
+                }
+            });
+        });
+    }
 }

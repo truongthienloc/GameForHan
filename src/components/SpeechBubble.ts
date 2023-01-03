@@ -1,25 +1,24 @@
-import Phaser from "phaser";
+import Phaser from 'phaser';
 
-export default class SpeechBubble
-{
+export default class SpeechBubble {
     private scene: Phaser.Scene;
     private graphics: Phaser.GameObjects.Graphics;
 
-    constructor(scene: Phaser.Scene) 
-    {
-        this.scene = scene
-        this.graphics = scene.add.graphics();
+    constructor(scene: Phaser.Scene) {
+        this.scene = scene;
+        const x = 0,
+            y = 0;
+        this.graphics = scene.add.graphics({ x: x, y: y });
     }
 
-    public clear(): void
-    {
+    public clear(): void {
         this.graphics.clear();
     }
 
-    public speech(quote: string): void 
-    {   
+    public speech(quote: string): void {
         // TODO: config property
-        const x = 0, y = 0, width = 800, height = 300;
+        const width = 800,
+            height = 300;
 
         var bubbleWidth = width;
         var bubbleHeight = height;
@@ -52,18 +51,39 @@ export default class SpeechBubble
 
         //  Bubble arrow shadow
         this.graphics.lineStyle(4, 0x222222, 0.5);
-        this.graphics.lineBetween(point2X - 1, point2Y + 6, point3X + 2, point3Y);
+        this.graphics.lineBetween(
+            point2X - 1,
+            point2Y + 6,
+            point3X + 2,
+            point3Y,
+        );
 
         //  Bubble arrow fill
-        this.graphics.fillTriangle(point1X, point1Y, point2X, point2Y, point3X, point3Y);
+        this.graphics.fillTriangle(
+            point1X,
+            point1Y,
+            point2X,
+            point2Y,
+            point3X,
+            point3Y,
+        );
         this.graphics.lineStyle(2, 0x565656, 1);
         this.graphics.lineBetween(point2X, point2Y, point3X, point3Y);
         this.graphics.lineBetween(point1X, point1Y, point3X, point3Y);
 
-        var content = this.scene.add.text(0, 0, quote, { fontFamily: 'Arial', fontSize: "20", color: '#000000', align: 'center', wordWrap: { width: bubbleWidth - (bubblePadding * 2) } });
+        var content = this.scene.add.text(0, 0, quote, {
+            fontFamily: 'Arial',
+            fontSize: '20',
+            color: '#000000',
+            align: 'center',
+            wordWrap: { width: bubbleWidth - bubblePadding * 2 },
+        });
 
         var b = content.getBounds();
 
-        content.setPosition(this.graphics.x + (bubbleWidth / 2) - (b.width / 2), this.graphics.y + (bubbleHeight / 2) - (b.height / 2));
-        }
+        content.setPosition(
+            this.graphics.x + bubbleWidth / 2 - b.width / 2,
+            this.graphics.y + bubbleHeight / 2 - b.height / 2,
+        );
+    }
 }

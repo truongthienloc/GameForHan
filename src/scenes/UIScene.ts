@@ -1,19 +1,21 @@
-import Phaser from "phaser";
+import Phaser from 'phaser';
 
-export default class UIScene extends Phaser.Scene
-{
-    constructor() 
-    {
-        super("ui");
+import SpeechBubble from '~/components/SpeechBubble';
+
+export default class UIScene extends Phaser.Scene {
+    private speechBubble!: SpeechBubble;
+
+    constructor() {
+        super('ui');
     }
 
-    create()
-    {
-
+    init(): void {
+        this.speechBubble = new SpeechBubble(this);
     }
 
-    update(time: number, delta: number): void 
-    {
-        
+    create() {
+        this.speechBubble.speech('Hello');
     }
+
+    update(time: number, delta: number): void {}
 }
