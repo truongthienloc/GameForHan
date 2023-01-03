@@ -436,6 +436,16 @@
                          "name":"collides",
                          "type":"bool",
                          "value":false
+                        }, 
+                        {
+                         "name":"height",
+                         "type":"float",
+                         "value":12.78
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"edit"
                         }]
                 }, 
                 {
