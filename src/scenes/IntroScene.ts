@@ -3,6 +3,7 @@ import ComponentService from '~/utils/ComponentService';
 
 import HanController from '~/characters/Han/HanController';
 import HanBody from '~/characters/Han/HanBody';
+import HanAnims from '~/characters/Han/HanAnims';
 
 import * as configMap from '../configs/configMap01';
 import * as configChar from '../configs/configCharacter';
@@ -22,6 +23,13 @@ export default class IntroScene extends Phaser.Scene {
     init(): void {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.components = new ComponentService();
+        this.events.once(
+            Phaser.Scenes.Events.SHUTDOWN,
+            () => {
+                this.components.destroy();
+            },
+            this,
+        );
     }
 
     preload(): void {
@@ -103,6 +111,7 @@ export default class IntroScene extends Phaser.Scene {
             .sprite(x, y, 'Han')
             .setScale(configChar.SCALE_CHAR);
         this.components.addComponent(this.player, new HanBody());
+        this.components.addComponent(this.player, new HanAnims(this));
         this.components.addComponent(this.player, new HanController(this));
 
         this.physics.add.collider(this.player, platform);

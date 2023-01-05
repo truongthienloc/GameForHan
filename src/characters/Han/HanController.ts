@@ -15,7 +15,6 @@ export default class HanController implements IComponent {
 
     constructor(scene: Phaser.Scene) {
         this.scene = scene;
-        this.createAnimations();
         this.cursors = this.scene.input.keyboard.addKeys({
             up: Phaser.Input.Keyboard.KeyCodes.W,
             down: Phaser.Input.Keyboard.KeyCodes.S,
@@ -77,38 +76,4 @@ export default class HanController implements IComponent {
     private runOnEnter(): void {}
 
     private runOnUpdate(dt: number): void {}
-
-    private createAnimations(): void {
-        const anims = this.scene.anims;
-
-        anims.create({
-            key: 'Han-idle-0',
-            frames: [{ key: 'Han', frame: 'Han_idle_01.png' }],
-        });
-        anims.create({
-            key: 'Han-idle-1',
-            frames: anims.generateFrameNames('Han', {
-                prefix: 'Han_idle_',
-                suffix: '.png',
-                start: 1,
-                end: 6,
-                zeroPad: 2,
-            }),
-            frameRate: 8,
-            repeat: 0,
-        });
-
-        anims.create({
-            key: 'Han-run',
-            frames: anims.generateFrameNames('Han', {
-                prefix: 'Han_run_',
-                suffix: '.png',
-                start: 1,
-                end: 9,
-                zeroPad: 2,
-            }),
-            frameRate: 8,
-            repeat: -1,
-        });
-    }
 }

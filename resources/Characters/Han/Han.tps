@@ -2,9 +2,9 @@
 <data version="1.0">
     <struct type="Settings">
         <key>fileFormatVersion</key>
-        <int>5</int>
+        <int>6</int>
         <key>texturePackerVersion</key>
-        <string>6.0.2</string>
+        <string>7.0.0</string>
         <key>autoSDSettings</key>
         <array>
             <struct type="AutoSDSettings">
@@ -127,8 +127,8 @@
                 <filename>../../../public/characters/han/Han.json</filename>
             </struct>
         </map>
-        <key>multiPack</key>
-        <false/>
+        <key>multiPackMode</key>
+        <enum type="SettingsBase::MultiPackMode">MultiPackOff</enum>
         <key>forceIdenticalLayout</key>
         <false/>
         <key>outputFormat</key>
@@ -173,6 +173,15 @@
         </struct>
         <key>individualSpriteSettings</key>
         <map type="IndividualSpriteSettingsMap">
+            <key type="filename">Han_attack_spear_01.png</key>
+            <key type="filename">Han_attack_spear_02.png</key>
+            <key type="filename">Han_attack_spear_03.png</key>
+            <key type="filename">Han_attack_spear_04.png</key>
+            <key type="filename">Han_attack_spear_05.png</key>
+            <key type="filename">Han_attack_sword_01.png</key>
+            <key type="filename">Han_attack_sword_02.png</key>
+            <key type="filename">Han_attack_sword_03.png</key>
+            <key type="filename">Han_attack_sword_04.png</key>
             <key type="filename">Han_idle_01.png</key>
             <key type="filename">Han_idle_02.png</key>
             <key type="filename">Han_idle_03.png</key>
@@ -203,24 +212,39 @@
                 <false/>
             </struct>
         </map>
-        <key>fileList</key>
-        <array>
-            <filename>Han_idle_01.png</filename>
-            <filename>Han_idle_02.png</filename>
-            <filename>Han_idle_03.png</filename>
-            <filename>Han_idle_04.png</filename>
-            <filename>Han_idle_05.png</filename>
-            <filename>Han_idle_06.png</filename>
-            <filename>Han_run_01.png</filename>
-            <filename>Han_run_02.png</filename>
-            <filename>Han_run_03.png</filename>
-            <filename>Han_run_04.png</filename>
-            <filename>Han_run_05.png</filename>
-            <filename>Han_run_06.png</filename>
-            <filename>Han_run_07.png</filename>
-            <filename>Han_run_08.png</filename>
-            <filename>Han_run_09.png</filename>
-        </array>
+        <key>fileLists</key>
+        <map type="SpriteSheetMap">
+            <key>default</key>
+            <struct type="SpriteSheet">
+                <key>files</key>
+                <array>
+                    <filename>Han_idle_01.png</filename>
+                    <filename>Han_idle_02.png</filename>
+                    <filename>Han_idle_03.png</filename>
+                    <filename>Han_idle_04.png</filename>
+                    <filename>Han_idle_05.png</filename>
+                    <filename>Han_idle_06.png</filename>
+                    <filename>Han_run_01.png</filename>
+                    <filename>Han_run_02.png</filename>
+                    <filename>Han_run_03.png</filename>
+                    <filename>Han_run_04.png</filename>
+                    <filename>Han_run_05.png</filename>
+                    <filename>Han_run_06.png</filename>
+                    <filename>Han_run_07.png</filename>
+                    <filename>Han_run_08.png</filename>
+                    <filename>Han_run_09.png</filename>
+                    <filename>Han_attack_spear_01.png</filename>
+                    <filename>Han_attack_spear_02.png</filename>
+                    <filename>Han_attack_spear_03.png</filename>
+                    <filename>Han_attack_spear_04.png</filename>
+                    <filename>Han_attack_spear_05.png</filename>
+                    <filename>Han_attack_sword_01.png</filename>
+                    <filename>Han_attack_sword_02.png</filename>
+                    <filename>Han_attack_sword_03.png</filename>
+                    <filename>Han_attack_sword_04.png</filename>
+                </array>
+            </struct>
+        </map>
         <key>ignoreFileList</key>
         <array/>
         <key>replaceList</key>
