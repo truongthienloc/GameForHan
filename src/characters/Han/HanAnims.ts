@@ -14,20 +14,19 @@ export default class HanAnims implements IComponent {
         const anims = scene.anims;
 
         anims.create({
-            key: 'Han-idle-0',
-            frames: [{ key: 'Han', frame: 'Han_idle_01.png' }],
-        });
-        anims.create({
-            key: 'Han-idle-1',
-            frames: anims.generateFrameNames('Han', {
-                prefix: 'Han_idle_',
-                suffix: '.png',
-                start: 1,
-                end: 6,
-                zeroPad: 2,
-            }),
+            key: 'Han-idle',
+            frames: [
+                { key: 'Han', frame: 'Han_idle_01.png', duration: 1900 },
+                ...anims.generateFrameNames('Han', {
+                    prefix: 'Han_idle_',
+                    suffix: '.png',
+                    start: 1,
+                    end: 6,
+                    zeroPad: 2,
+                }),
+            ],
             frameRate: 8,
-            repeat: 0,
+            repeat: -1,
         });
 
         anims.create({

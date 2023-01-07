@@ -29,19 +29,25 @@ export default class HanController implements IComponent {
         this.sprite = go as Sprite;
 
         // TODO: Config stateMachine
-        this.stateMachine
-            .addState('idle-0', {
-                onEnter: this.idleOnEnter(0),
-                onUpdate: this.idleOnUpdate,
-            })
-            .addState('idle-1', {
-                onEnter: this.idleOnEnter(1),
-            })
-            .addState('run', {
-                onEnter: this.runOnEnter,
-                onUpdate: this.runOnUpdate,
-            })
-            .setState('idle-0');
+        // this.stateMachine
+        //     .addState('idle-0', {
+        //         onEnter: this.idleOnEnter(0),
+        //         onUpdate: this.idleOnUpdate,
+        //     })
+        //     .addState('idle-1', {
+        //         onEnter: this.idleOnEnter(1),
+        //     })
+        //     .addState('run', {
+        //         onEnter: this.runOnEnter,
+        //         onUpdate: this.runOnUpdate,
+        //     })
+        //     .addState("attack-spear", {
+        //         onEnter: this.attackSpearOnEnter,
+        //     })
+        //     .addState("attack-sword", {
+        //         onEnter: this.attackSwordOnEnter,
+        //     })
+        //     .setState('idle-0');
     }
 
     update(dt: number): void {
@@ -73,7 +79,17 @@ export default class HanController implements IComponent {
         }
     }
 
-    private runOnEnter(): void {}
+    private runOnEnter(): void {
+        this.sprite.play('Han-run');
+    }
 
     private runOnUpdate(dt: number): void {}
+
+    private attackSpearOnEnter(): void {
+        this.sprite.play('Han-attack-spear');
+    }
+
+    private attackSwordOnEnter(): void {
+        this.sprite.play('Han-attack-sword');
+    }
 }

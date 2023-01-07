@@ -1,7 +1,9 @@
 import Phaser from 'phaser';
 import ComponentService from '~/utils/ComponentService';
+import StateMachine from '~/utils/StateMachine';
+import sceneEvents from '~/events/sceneEvents';
 
-import HanController from '~/characters/Han/HanController';
+import HanScript from '~/scripts/map01';
 import HanBody from '~/characters/Han/HanBody';
 import HanAnims from '~/characters/Han/HanAnims';
 
@@ -15,6 +17,7 @@ export default class IntroScene extends Phaser.Scene {
     private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
 
     private components!: ComponentService;
+    private stateScene!: StateMachine;
 
     constructor() {
         super('intro');
@@ -23,6 +26,7 @@ export default class IntroScene extends Phaser.Scene {
     init(): void {
         this.cursors = this.input.keyboard.createCursorKeys();
         this.components = new ComponentService();
+        this.stateScene = new StateMachine(this);
         this.events.once(
             Phaser.Scenes.Events.SHUTDOWN,
             () => {
@@ -38,6 +42,23 @@ export default class IntroScene extends Phaser.Scene {
     }
 
     create(): void {
+        this.stateScene
+            .addState('init-scene', {
+                onEnter: this.initOnEnter,
+                onUpdate: this.initOnUpdate,
+            })
+            .addState('script_01', {
+                onEnter: this.script01OnEnter,
+            })
+            .setState('init-scene');
+    }
+
+    update(time: number, delta: number): void {
+        this.components.update(delta);
+        this.stateScene.update(delta);
+    }
+
+    private initOnEnter(): void {
         // TODO: Create map & scale map
         const map = this.make.tilemap({ key: 'Map01_House' });
         map.setBaseTileSize(
@@ -112,10 +133,11 @@ export default class IntroScene extends Phaser.Scene {
             .setScale(configChar.SCALE_CHAR);
         this.components.addComponent(this.player, new HanBody());
         this.components.addComponent(this.player, new HanAnims(this));
-        this.components.addComponent(this.player, new HanController(this));
+        this.components.addComponent(this.player, new HanScript(this));
+        // this.components.addComponent(this.player, new HanController(this));
 
         this.physics.add.collider(this.player, platform);
-        debugDraw(platform, this);
+        // debugDraw(platform, this);
 
         // TODO: Change background color
         this.cameras.main.setBackgroundColor(0xd8d8d8);
@@ -128,7 +150,11 @@ export default class IntroScene extends Phaser.Scene {
         this.cameras.main.setBounds(0, 0, MAP_WIDTH, MAP_HEIGHT);
     }
 
-    update(time: number, delta: number): void {
-        this.components.update(delta);
+    private initOnUpdate(): void {
+        this.stateScene.setState('script_01');
+    }
+
+    private script01OnEnter(): void {
+        sceneEvents.emit('next_script');
     }
 }

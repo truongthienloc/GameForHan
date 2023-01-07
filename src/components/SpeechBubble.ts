@@ -1,32 +1,48 @@
 import Phaser from 'phaser';
 
+const x = 25,
+    y = 10;
+const width = 750,
+    height = 100;
+const bubbleHeight = height;
+const bubbleWidth = width;
+const bubblePadding = 10;
+const widthImage = 40;
+
 export default class SpeechBubble {
     private scene: Phaser.Scene;
     private graphics: Phaser.GameObjects.Graphics;
+    private content: Phaser.GameObjects.Text;
+    private avatar: Phaser.GameObjects.Image;
 
     constructor(scene: Phaser.Scene) {
         this.scene = scene;
-        const x = 25,
-            y = 10;
+
         this.graphics = scene.add.graphics({ x: x, y: y });
+        this.content = this.scene.add.text(0, 0, '', {
+            fontFamily: 'Arial',
+            fontSize: '20px',
+            color: '#000000',
+            align: 'center',
+            wordWrap: { width: bubbleWidth - bubblePadding * 2 - widthImage },
+        });
+        this.avatar = this.scene.add
+            .image(x, y, '')
+            .setVisible(false)
+            .setScale(0.15)
+            .setOrigin(0.27, 0.2);
     }
 
     public clear(): void {
         this.graphics.clear();
+        this.content.setText('');
+        this.avatar.setVisible(false);
     }
 
-    public speech(quote: string): void {
-        this.graphics.clear();
-        // TODO: config property
-        const width = 750,
-            height = 100;
+    public speech(quote: string, name?: string, avatar?: string): void {
+        this.clear();
 
-        var bubbleWidth = width;
-        var bubbleHeight = height;
-        var bubblePadding = 10;
-        var arrowHeight = bubbleHeight / 4;
-
-        // var bubble = this.add.graphics({ x: x, y: y });
+        const arrowHeight = bubbleHeight / 4;
 
         //  Bubble shadow
         this.graphics.fillStyle(0x222222, 0.5);
@@ -72,19 +88,28 @@ export default class SpeechBubble {
         this.graphics.lineBetween(point2X, point2Y, point3X, point3Y);
         this.graphics.lineBetween(point1X, point1Y, point3X, point3Y);
 
-        var content = this.scene.add.text(0, 0, quote, {
-            fontFamily: 'Arial',
-            fontSize: '20px',
-            color: '#000000',
-            align: 'center',
-            wordWrap: { width: bubbleWidth - bubblePadding * 2 },
-        });
+        if(name) {
+            this.content.setText(`${name}: "${quote}"`);
+        }
+        else {
+            this.content.setText(quote);
+        }
 
-        var b = content.getBounds();
+        const b = this.content.getBounds();
 
-        content.setPosition(
-            this.graphics.x + bubbleWidth / 2 - b.width / 2,
+        this.content.setPosition(
+            this.graphics.x +
+                widthImage -
+                bubblePadding / 2 +
+                bubbleWidth / 2 -
+                b.width / 2,
             this.graphics.y + bubbleHeight / 2 - b.height / 2,
         );
+
+        if (avatar) {
+            console.log(avatar);
+            this.avatar.setTexture(avatar);
+            this.avatar.setVisible(true);
+        }
     }
 }

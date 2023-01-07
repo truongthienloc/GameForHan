@@ -8,6 +8,9 @@ export default class Preloader extends Phaser.Scene {
     preload() {
         // Load images
         this.load.image('start_bg', 'images/start_bg(288 x 208).png');
+        this.load.image('Han_avatar', 'images/Han.png');
+        this.load.image('Loc_avatar', 'images/Loc.png');
+        this.load.image('Wang_avatar', 'images/Wang.png');
 
         // Load tiles
         this.load.image('house_platformer', 'tiles/House-tileset(30 x 30).png');
