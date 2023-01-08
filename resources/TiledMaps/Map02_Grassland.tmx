@@ -1581,7 +1581,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="objects" locked="1">
-  <object id="1" name="Han" class="Hero" x="36.6667" y="289.333">
+  <object id="1" name="Han" class="Hero" x="11" y="296.333">
    <point/>
   </object>
   <object id="3" name="Blocked" x="1215" y="161" width="15" height="96.3333"/>

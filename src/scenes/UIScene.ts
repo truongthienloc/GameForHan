@@ -32,7 +32,7 @@ export default class UIScene extends Phaser.Scene {
         avatar?: string,
     ): void {
         // TODO: Make text
-        this.speechBubble.speech(speechText, name , avatar);
+        this.speechBubble.speech(speechText, name, avatar);
     }
 
     private handleBubbleClear(): void {

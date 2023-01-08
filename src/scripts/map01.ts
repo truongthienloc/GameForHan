@@ -18,7 +18,7 @@ export default class HanScript implements IComponent {
     private countTime: number = 0;
     static WAIT_TIME: number = 1000;
 
-    private script: { speech: string, name?: string, avatar?: string }[] = [];
+    private script: { speech: string; name?: string; avatar?: string }[] = [];
     private iScript: number = 0;
 
     constructor(scene?: Phaser.Scene) {
@@ -56,7 +56,7 @@ export default class HanScript implements IComponent {
                 onEnter: this.script03OnEnter,
                 onUpdate: this.script03OnUpdate,
             })
-            .addState("script_04", {
+            .addState('script_04', {
                 onEnter: this.script04OnEnter,
             })
             .setState('pending');
@@ -173,7 +173,7 @@ export default class HanScript implements IComponent {
             duration: 4000,
             onComplete: () => {
                 this.sprite.setVelocityX(0);
-                // this.stateMachine.setState('script_03');
+                // this.scene?.scene.start()
             },
         });
     }

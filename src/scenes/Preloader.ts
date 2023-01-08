@@ -20,6 +20,15 @@ export default class Preloader extends Phaser.Scene {
             'tiles/House-livingroom(30 x 30).png',
         );
 
+        this.load.image(
+            'Grassland_platformer',
+            'tiles/Grassland_platformer(16 x 16).png',
+        );
+        this.load.image(
+            'Grassland_entities',
+            'tiles/Grassland_entities(16 x 16).png',
+        );
+
         // Load characters
         this.load.atlas(
             'Han',
@@ -29,12 +38,16 @@ export default class Preloader extends Phaser.Scene {
 
         // Load tilemaps
         this.load.tilemapTiledJSON('Map01_House', 'maps/Map01_House.json');
+        this.load.tilemapTiledJSON(
+            'Map02_Grassland',
+            'maps/Map02_Grassland.json',
+        );
 
         // Load audiosz
         this.load.audio('start_music', 'audios/musics/start_mc.ogg');
     }
 
     create() {
-        this.scene.start('intro');
+        this.scene.start('grassland');
     }
 }

@@ -30,15 +30,15 @@ export default {
             speech: 'Đã có một cuộc giằn co giữa quân đội và người Ngoài hành tinh. Sau đó người ngoài hành tinh đã rút lui. Nhưng thiệt hại của Quốc gia cũng không nhỏ. Hàng trăm nhà Nghiên cứu và những người lính đã hi sinh, một tập tài liệu quan trọng đã bị đánh cắp... Chúng ta sẽ đến với bản tin kế tiếp...',
         },
         {
-            speech: '...'
+            speech: '...',
         },
         {
             name: 'Han',
             avatar: 'Han_avatar',
-            speech: 'Chuyện kinh khủng này đã xảy ra trong lúc mình vẫn đang ngủ sao? Bây giờ mình nên làm gì?'
+            speech: 'Chuyện kinh khủng này đã xảy ra trong lúc mình vẫn đang ngủ sao? Bây giờ mình nên làm gì?',
         },
         {
-            speech: '...reng...reng...reng...'
+            speech: '...reng...reng...reng...',
         },
         {
             name: 'Loc',
@@ -49,6 +49,6 @@ export default {
             name: 'Han',
             avatar: 'Han_avatar',
             speech: 'Tôi đã hiểu tôi sẽ đến ngay',
-        }
+        },
     ],
 };

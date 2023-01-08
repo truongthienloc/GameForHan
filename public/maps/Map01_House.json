@@ -98,15 +98,14 @@
          "objects":[
                 {
                  "class":"",
-                 "height":0,
-                 "id":2,
-                 "name":"endmap01",
-                 "point":true,
+                 "height":60.25,
+                 "id":4,
+                 "name":"End_map_01",
                  "rotation":0,
                  "visible":true,
-                 "width":0,
-                 "x":599.333,
-                 "y":240
+                 "width":14.25,
+                 "x":585.5,
+                 "y":209.25
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -115,7 +114,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":3,
+ "nextobjectid":7,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.9.2",
@@ -410,7 +409,7 @@
                      "objects":[
                             {
                              "class":"",
-                             "height":12.781427119674,
+                             "height":12.7814,
                              "id":3,
                              "name":"",
                              "properties":[
@@ -421,9 +420,9 @@
                                     }],
                              "rotation":0,
                              "visible":true,
-                             "width":30.1725492661156,
-                             "x":-0.209531592125803,
-                             "y":17.0768247582529
+                             "width":30.1725,
+                             "x":-0.209532,
+                             "y":17.0768
                             }],
                      "opacity":1,
                      "type":"objectgroup",

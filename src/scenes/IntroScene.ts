@@ -134,10 +134,36 @@ export default class IntroScene extends Phaser.Scene {
         this.components.addComponent(this.player, new HanBody());
         this.components.addComponent(this.player, new HanAnims(this));
         this.components.addComponent(this.player, new HanScript(this));
-        // this.components.addComponent(this.player, new HanController(this));
 
         this.physics.add.collider(this.player, platform);
         // debugDraw(platform, this);
+
+        const scripts = map.getObjectLayer('scripts');
+        for (let script of scripts.objects) {
+            const {
+                name,
+                x: mx = 0,
+                y: my = 0,
+                width: mw = 0,
+                height: mh = 0,
+            } = script;
+            if (name === 'End_map_01') {
+                const x = mx * configMap.mulPx,
+                    y = my * configMap.mulPx,
+                    w = mw * configMap.mulPx,
+                    h = mh * configMap.mulPx;
+
+                const endMapPoint = this.add
+                    .rectangle(x, y, w, h, 0x000, 0)
+                    .setOrigin(0, 0);
+                this.physics.add.existing(endMapPoint, true);
+
+                // TODO: Navigate to map 02
+                this.physics.add.overlap(this.player, endMapPoint, () => {
+                    this.scene.start('grassland');
+                });
+            }
+        }
 
         // TODO: Change background color
         this.cameras.main.setBackgroundColor(0xd8d8d8);

@@ -88,10 +88,9 @@ export default class SpeechBubble {
         this.graphics.lineBetween(point2X, point2Y, point3X, point3Y);
         this.graphics.lineBetween(point1X, point1Y, point3X, point3Y);
 
-        if(name) {
+        if (name) {
             this.content.setText(`${name}: "${quote}"`);
-        }
-        else {
+        } else {
             this.content.setText(quote);
         }
 
@@ -107,7 +106,6 @@ export default class SpeechBubble {
         );
 
         if (avatar) {
-            console.log(avatar);
             this.avatar.setTexture(avatar);
             this.avatar.setVisible(true);
         }
