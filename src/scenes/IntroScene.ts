@@ -8,7 +8,7 @@ import HanBody from '~/characters/Han/HanBody';
 import HanAnims from '~/characters/Han/HanAnims';
 
 import * as configMap from '../configs/configMap01';
-import * as configChar from '../configs/configCharacter';
+import * as configChar from '../configs/configCharacter01';
 
 import { debugDraw } from '~/utils/debug';
 
@@ -129,9 +129,8 @@ export default class IntroScene extends Phaser.Scene {
         const y = my * configMap.mulPx;
 
         this.player = this.physics.add
-            .sprite(x, y, 'Han')
-            .setScale(configChar.SCALE_CHAR);
-        this.components.addComponent(this.player, new HanBody());
+            .sprite(x, y, 'Han');
+        this.components.addComponent(this.player, new HanBody('01'));
         this.components.addComponent(this.player, new HanAnims(this));
         this.components.addComponent(this.player, new HanScript(this));
 

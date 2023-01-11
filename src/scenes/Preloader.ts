@@ -35,6 +35,9 @@ export default class Preloader extends Phaser.Scene {
             'characters/Han/Han.png',
             'characters/Han/Han.json',
         );
+        
+        this.load.atlas('Undead', 'characters/Undead/Undead.png', 'characters/Undead/Undead.json');
+        this.load.atlas('LTH', 'characters/LTH/LTH.png', 'characters/LTH/LTH.json');
 
         // Load tilemaps
         this.load.tilemapTiledJSON('Map01_House', 'maps/Map01_House.json');

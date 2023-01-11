@@ -2,6 +2,10 @@ import Phaser from 'phaser';
 import ComponentService from '~/utils/ComponentService';
 import StateMachine from '~/utils/StateMachine';
 
+import HanBody from '~/characters/Han/HanBody';
+import HanAnims from '~/characters/Han/HanAnims';
+import HanController from '~/characters/Han/HanController';
+
 import * as configMap from '../configs/configMap02';
 
 type Sprite = Phaser.Physics.Arcade.Sprite;
@@ -9,15 +13,21 @@ type Sprite = Phaser.Physics.Arcade.Sprite;
 export default class GrasslandScene extends Phaser.Scene {
     private player!: Sprite;
 
+    private components!: ComponentService;
+
     constructor() {
         super('grassland');
     }
 
-    init() {}
+    init() {
+        this.components = new ComponentService;
+
+        this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
+
+        }, this);
+    }
 
     create() {
-        console.log('Grassland');
-
         const map = this.make.tilemap({ key: 'Map02_Grassland' });
         map.setBaseTileSize(
             configMap.TILE_WIDTH_GAME,
@@ -45,6 +55,8 @@ export default class GrasslandScene extends Phaser.Scene {
                 tile.tint = TINT_BACKGROUND;
             });
 
+        const middleLayer = this.add.layer();
+
         const platform = map
             .createLayer('platform', [
                 tilesGrasslandPLatform,
@@ -71,14 +83,18 @@ export default class GrasslandScene extends Phaser.Scene {
 
             if (name === 'Han') {
                 this.player = this.physics.add.sprite(
-                    x,
+                    x + 345,
                     y - 100,
                     'Han',
                     'Han_idle_01.png',
                 );
+                this.components.addComponent(this.player, new HanBody('02'));
+                this.components.addComponent(this.player, new HanAnims(this));
+                this.components.addComponent(this.player, new HanController(this, '02'));
 
                 this.cameras.main.startFollow(this.player);
                 this.physics.add.collider(this.player, platform);
+                middleLayer.add(this.player);
             }
         }
 
@@ -90,5 +106,7 @@ export default class GrasslandScene extends Phaser.Scene {
         this.physics.world.setBounds(0, 0, MAP_WIDTH, MAP_HEIGHT);
     }
 
-    update(time: number, delta: number): void {}
+    update(time: number, delta: number): void {
+        this.components.update(delta);
+    }
 }

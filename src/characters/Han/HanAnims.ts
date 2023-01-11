@@ -43,6 +43,12 @@ export default class HanAnims implements IComponent {
         });
 
         anims.create({
+            key: 'Han-jump',
+            frames: [{ key: 'Han', frame: 'Han_idle_01.png' }],
+            repeat: -1
+        })
+
+        anims.create({
             key: 'Han-attack-spear',
             frames: anims.generateFrameNames('Han', {
                 prefix: 'Han_attack_spear_',
@@ -51,7 +57,7 @@ export default class HanAnims implements IComponent {
                 end: 5,
                 zeroPad: 2,
             }),
-            frameRate: 8,
+            frameRate: 16,
             repeat: 0,
         });
 
