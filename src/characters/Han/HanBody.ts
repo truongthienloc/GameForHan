@@ -6,7 +6,7 @@ import * as configChar02 from '~/configs/configCharacter02';
 
 type Sprite = Phaser.Physics.Arcade.Sprite;
 
-let configChar: {SCALE_BODY, SCALE_OFFSET, SCALE_CHAR};
+let configChar: { SCALE_BODY; SCALE_OFFSET; SCALE_CHAR };
 
 export default class HanBody implements IComponent {
     private sprite!: Sprite;
@@ -14,8 +14,7 @@ export default class HanBody implements IComponent {
     constructor(type?: string) {
         if (!type || type === '01') {
             configChar = configChar01;
-        }
-        else if (type === '02') {
+        } else if (type === '02') {
             configChar = configChar02;
         }
     }

@@ -45,8 +45,8 @@ export default class HanAnims implements IComponent {
         anims.create({
             key: 'Han-jump',
             frames: [{ key: 'Han', frame: 'Han_idle_01.png' }],
-            repeat: -1
-        })
+            repeat: -1,
+        });
 
         anims.create({
             key: 'Han-attack-spear',

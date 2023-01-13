@@ -39,6 +39,7 @@
         {
          "draworder":"topdown",
          "id":2,
+         "locked":true,
          "name":"objects",
          "objects":[
                 {
@@ -50,7 +51,7 @@
                  "rotation":0,
                  "visible":true,
                  "width":0,
-                 "x":11.0000333333333,
+                 "x":11,
                  "y":296.333
                 }, 
                 {
@@ -74,6 +75,18 @@
                  "width":15.6667,
                  "x":1569,
                  "y":160.667
+                }, 
+                {
+                 "class":"",
+                 "height":0,
+                 "id":8,
+                 "name":"Undead",
+                 "point":true,
+                 "rotation":0,
+                 "visible":true,
+                 "width":0,
+                 "x":26,
+                 "y":296
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -148,7 +161,7 @@
          "y":0
         }],
  "nextlayerid":5,
- "nextobjectid":8,
+ "nextobjectid":9,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.9.2",

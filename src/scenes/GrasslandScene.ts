@@ -6,12 +6,18 @@ import HanBody from '~/characters/Han/HanBody';
 import HanAnims from '~/characters/Han/HanAnims';
 import HanController from '~/characters/Han/HanController';
 
+import UndeadAnims from '~/characters/Undead/UndeadAnims';
+import UndeadBody from '~/characters/Undead/UndeadBody';
+
 import * as configMap from '../configs/configMap02';
 
 type Sprite = Phaser.Physics.Arcade.Sprite;
 
 export default class GrasslandScene extends Phaser.Scene {
     private player!: Sprite;
+    private damageHero!: Phaser.Physics.Arcade.Group;
+    private enemies!: Phaser.Physics.Arcade.Group;
+    private damageEnemies!: Phaser.Physics.Arcade.Group;
 
     private components!: ComponentService;
 
@@ -20,11 +26,9 @@ export default class GrasslandScene extends Phaser.Scene {
     }
 
     init() {
-        this.components = new ComponentService;
+        this.components = new ComponentService();
 
-        this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {
-
-        }, this);
+        this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {}, this);
     }
 
     create() {
@@ -75,6 +79,10 @@ export default class GrasslandScene extends Phaser.Scene {
             'background',
         );
 
+        this.enemies = this.physics.add.group();
+        this.physics.add.collider(this.enemies, platform);
+
+        // TODO: Create Objects
         const objects = map.getObjectLayer('objects');
         for (const object of objects.objects) {
             const { name, x: mx = 0, y: my = 0 } = object;
@@ -90,11 +98,21 @@ export default class GrasslandScene extends Phaser.Scene {
                 );
                 this.components.addComponent(this.player, new HanBody('02'));
                 this.components.addComponent(this.player, new HanAnims(this));
-                this.components.addComponent(this.player, new HanController(this, '02'));
+                this.components.addComponent(
+                    this.player,
+                    new HanController(this, '02'),
+                );
 
                 this.cameras.main.startFollow(this.player);
                 this.physics.add.collider(this.player, platform);
                 middleLayer.add(this.player);
+            } else if (name === 'Undead') {
+                const undead = this.enemies.create(x, y - 50, 'Undead');
+
+                this.components.addComponent(undead, new UndeadAnims(this));
+                this.components.addComponent(undead, new UndeadBody());
+
+                undead.play('Undead-idle');
             }
         }
 

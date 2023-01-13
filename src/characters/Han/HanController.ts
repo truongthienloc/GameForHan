@@ -5,11 +5,15 @@ import sceneEvents from '~/events/sceneEvents';
 
 import * as configMap02 from '~/configs/configMap02';
 
-let configMap: {px, mulPx, gravity};
+let configMap: { px; mulPx; gravity };
 
 type Sprite = Phaser.Physics.Arcade.Sprite;
 type Key = Phaser.Input.Keyboard.Key;
-type Cursors = Phaser.Types.Input.Keyboard.CursorKeys & {attack: Key, special: Key, dash: Key};
+type Cursors = Phaser.Types.Input.Keyboard.CursorKeys & {
+    attack: Key;
+    special: Key;
+    dash: Key;
+};
 
 export default class HanController implements IComponent {
     private scene: Phaser.Scene;
@@ -61,10 +65,10 @@ export default class HanController implements IComponent {
                 onEnter: this.jumpOnEnter,
                 onUpdate: this.jumpOnUpdate,
             })
-            .addState("attack-spear", {
+            .addState('attack-spear', {
                 onEnter: this.attackSpearOnEnter,
             })
-            .addState("attack-sword", {
+            .addState('attack-sword', {
                 onEnter: this.attackSwordOnEnter,
             })
             .setState('idle');
@@ -75,15 +79,23 @@ export default class HanController implements IComponent {
     }
 
     private disableOnEnter(): void {
-        sceneEvents.once('enable_HanController', () => {
-            this.stateMachine.setState('idle');
-        }, this);
+        sceneEvents.once(
+            'enable_HanController',
+            () => {
+                this.stateMachine.setState('idle');
+            },
+            this,
+        );
     }
 
     private disableOnExit(): void {
-        sceneEvents.once('disable_HanController', () => {
-            this.stateMachine.setState('disable');
-        }, this);
+        sceneEvents.once(
+            'disable_HanController',
+            () => {
+                this.stateMachine.setState('disable');
+            },
+            this,
+        );
     }
 
     private idleOnEnter(): void {
@@ -96,7 +108,7 @@ export default class HanController implements IComponent {
         const right = this.cursors.right;
         const up = Phaser.Input.Keyboard.JustDown(this.cursors.up);
         const attack = Phaser.Input.Keyboard.JustDown(this.cursors.attack);
-        
+
         if (left.isDown || right.isDown) {
             this.stateMachine.setState('run');
         }
@@ -131,7 +143,7 @@ export default class HanController implements IComponent {
         } else {
             this.stateMachine.setState('idle');
         }
-        
+
         if (up) {
             this.stateMachine.setState('jump');
         }
@@ -145,15 +157,13 @@ export default class HanController implements IComponent {
         this.sprite.play('Han-jump');
 
         const prevState = this.stateMachine.previousStateName;
-        if(prevState === "idle" || prevState === "run") {
-            const 
-                g = configMap.gravity,
+        if (prevState === 'idle' || prevState === 'run') {
+            const g = configMap.gravity,
                 h = this.jumpHigh * configMap.px;
             const v = Math.sqrt(2 * g * h);
             console.log(v);
-            
-            this.sprite.setVelocityY(-v);
 
+            this.sprite.setVelocityY(-v);
         }
     }
 
@@ -171,8 +181,8 @@ export default class HanController implements IComponent {
         } else if (this.cursors.right.isDown) {
             this.sprite.setVelocityX(speed);
             this.sprite.setFlipX(false);
-        } 
-        
+        }
+
         if (attack) {
             this.stateMachine.setState(`attack-${this.currentWeapon}`);
         }
@@ -186,19 +196,29 @@ export default class HanController implements IComponent {
         this.sprite.play('Han-attack-spear');
         this.sprite.setVelocity(0);
 
-        this.sprite.once(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'Han-attack-spear', () => {
-            const prevState = this.stateMachine.previousStateName;
-            this.stateMachine.setState(prevState);
-        }, this);
+        this.sprite.once(
+            Phaser.Animations.Events.ANIMATION_COMPLETE_KEY +
+                'Han-attack-spear',
+            () => {
+                const prevState = this.stateMachine.previousStateName;
+                this.stateMachine.setState(prevState);
+            },
+            this,
+        );
     }
 
     private attackSwordOnEnter(): void {
         this.sprite.play('Han-attack-sword');
         this.sprite.setVelocity(0);
 
-        this.sprite.once(Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'Han-attack-sword', () => {
-            const prevState = this.stateMachine.previousStateName;
-            this.stateMachine.setState(prevState);
-        }, this);
+        this.sprite.once(
+            Phaser.Animations.Events.ANIMATION_COMPLETE_KEY +
+                'Han-attack-sword',
+            () => {
+                const prevState = this.stateMachine.previousStateName;
+                this.stateMachine.setState(prevState);
+            },
+            this,
+        );
     }
 }

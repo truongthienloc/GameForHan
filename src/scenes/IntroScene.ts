@@ -128,8 +128,7 @@ export default class IntroScene extends Phaser.Scene {
         const x = mx * configMap.mulPx;
         const y = my * configMap.mulPx;
 
-        this.player = this.physics.add
-            .sprite(x, y, 'Han');
+        this.player = this.physics.add.sprite(x, y, 'Han');
         this.components.addComponent(this.player, new HanBody('01'));
         this.components.addComponent(this.player, new HanAnims(this));
         this.components.addComponent(this.player, new HanScript(this));

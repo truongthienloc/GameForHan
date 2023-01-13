@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="100" height="20" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#aaffff" nextlayerid="5" nextobjectid="8">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="100" height="20" tilewidth="16" tileheight="16" infinite="0" backgroundcolor="#aaffff" nextlayerid="5" nextobjectid="9">
  <tileset firstgid="1" name="Grassland_platformer" tilewidth="16" tileheight="16" tilecount="170" columns="17">
   <image source="../../public/tiles/Grassland_platformer(16 x 16).png" width="272" height="160"/>
   <tile id="0">
@@ -1586,6 +1586,9 @@
   </object>
   <object id="3" name="Blocked" x="1215" y="161" width="15" height="96.3333"/>
   <object id="4" name="Blocked" x="1569" y="160.667" width="15.6667" height="95"/>
+  <object id="8" name="Undead" x="26" y="296">
+   <point/>
+  </object>
  </objectgroup>
  <objectgroup id="4" name="scripts" locked="1">
   <object id="5" name="End_mission01" x="768.333" y="208.333" width="15.3333" height="48.3333"/>
