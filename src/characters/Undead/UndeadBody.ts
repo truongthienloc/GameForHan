@@ -10,6 +10,7 @@ let configChar: { UNDEAD_SCALE_BODY; UNDEAD_SCALE_OFFSET; UNDEAD_SCALE_CHAR };
 
 export default class UndeadBody implements IComponent {
     private sprite!: Sprite;
+    private body = { width: 0, height: 0 };
 
     public stateMachine: StateMachine;
 
@@ -23,6 +24,12 @@ export default class UndeadBody implements IComponent {
 
         this.sprite.setScale(configChar.UNDEAD_SCALE_CHAR);
 
+        const { width: bodyWidth, height: bodyHeight } = this.sprite.body;
+        this.body = {
+            width: bodyWidth,
+            height: bodyHeight,
+        };
+
         this.stateMachine
             .addState('default', {
                 onEnter: this.defaultOnEnter,
@@ -34,7 +41,7 @@ export default class UndeadBody implements IComponent {
     }
 
     private makeBody(): void {
-        const { width: bodyWidth, height: bodyHeight } = this.sprite.body;
+        const { width: bodyWidth, height: bodyHeight } = this.body;
         const { width: scaleWidth, height: scaleHeight } =
             configChar.UNDEAD_SCALE_BODY;
         const { width: scaleOffsetWidth, height: scaleOffsetHeight } =
@@ -62,10 +69,17 @@ export default class UndeadBody implements IComponent {
     }
 
     private idleDeathOnEnter(): void {
+        const UNDEAD_SCALE_OFFSET_DEATH = {
+            ...configEnemies.UNDEAD_SCALE_OFFSET_DEATH,
+        };
+        if (this.sprite.flipX) {
+            UNDEAD_SCALE_OFFSET_DEATH.width -= 0.65;
+        }
+
         configChar = {
             ...configChar,
             UNDEAD_SCALE_BODY: configEnemies.UNDEAD_SCALE_BODY_DEATH,
-            UNDEAD_SCALE_OFFSET: configEnemies.UNDEAD_SCALE_OFFSET_DEATH,
+            UNDEAD_SCALE_OFFSET: UNDEAD_SCALE_OFFSET_DEATH,
         };
 
         this.makeBody();

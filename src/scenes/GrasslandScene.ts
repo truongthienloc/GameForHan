@@ -8,6 +8,9 @@ import HanController from '~/characters/Han/HanController';
 
 import UndeadAnims from '~/characters/Undead/UndeadAnims';
 import UndeadBody from '~/characters/Undead/UndeadBody';
+import UndeadController from '~/characters/Undead/UndeadController';
+
+import HealthBar from '~/components/HealthBar';
 
 import * as configMap from '../configs/configMap02';
 
@@ -111,8 +114,18 @@ export default class GrasslandScene extends Phaser.Scene {
 
                 this.components.addComponent(undead, new UndeadAnims(this));
                 this.components.addComponent(undead, new UndeadBody());
+                this.components.addComponent(
+                    undead,
+                    new HealthBar(configMap.TILE_WIDTH_GAME),
+                );
+                this.components.addComponent(
+                    undead,
+                    new UndeadController(this.player),
+                );
 
-                undead.play('Undead-idle');
+                middleLayer.add(undead);
+
+                // undead.play('Undead-idle');
             }
         }
 
