@@ -4,6 +4,7 @@ import StateMachine from '~/utils/StateMachine';
 
 import HanBody from '~/characters/Han/HanBody';
 import HanAnims from '~/characters/Han/HanAnims';
+import HanHitbox from '~/characters/Han/HanHitbox';
 import HanController from '~/characters/Han/HanController';
 
 import UndeadAnims from '~/characters/Undead/UndeadAnims';
@@ -82,6 +83,7 @@ export default class GrasslandScene extends Phaser.Scene {
             'background',
         );
 
+        // this.damageHero = this.physics.add.group();
         this.enemies = this.physics.add.group();
         this.physics.add.collider(this.enemies, platform);
 
@@ -101,6 +103,10 @@ export default class GrasslandScene extends Phaser.Scene {
                 );
                 this.components.addComponent(this.player, new HanBody('02'));
                 this.components.addComponent(this.player, new HanAnims(this));
+                this.components.addComponent(
+                    this.player,
+                    new HanHitbox(this.damageHero, configMap.px),
+                );
                 this.components.addComponent(
                     this.player,
                     new HanController(this, '02'),

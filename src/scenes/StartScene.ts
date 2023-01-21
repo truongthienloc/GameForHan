@@ -36,6 +36,7 @@ export default class StartScene extends Phaser.Scene {
         });
 
         // TODO: make music
+        this.sound.stopAll();
         this.sound
             .add('start_music', {
                 loop: true,
@@ -56,6 +57,8 @@ export default class StartScene extends Phaser.Scene {
             .on(Phaser.Input.Events.GAMEOBJECT_POINTER_DOWN, () => {
                 this.scene.start('intro');
             });
+
+        this.timer = 0;
     }
 
     update(time: number, delta: number): void {

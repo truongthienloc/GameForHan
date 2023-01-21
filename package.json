@@ -1,10 +1,12 @@
 {
-	"name": "phaser-typescript-template",
+	"name": "game-for-han",
 	"version": "1.0.0",
-	"description": "A typescript template project for Phaser 3 using Parceljs",
+	"description": "The Tet gift for Han",
 	"scripts": {
 		"start": "parcel src/index.html -p 8000",
 		"build": "parcel build src/index.html --out-dir dist",
+		"predeploy": "npm run build",
+		"deploy": "gh-pages -d dist",
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"clean": "prettier --single-quote --trailing-comma all --tab-width 4  --write src/**/*.{ts,json}",
 		"lint": "eslint ./src --ext .js,.jsx,.ts,.tsx"
@@ -13,13 +15,14 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/truongthienloc/phaser-typescript-template.git"
+		"url": "https://github.com/truongthienloc/GameForHan.git"
 	},
-	"homepage": "https://github.com/truongthienloc/phaser-typescript-template",
+	"homepage": "https://github.com/truongthienloc/GameForHan",
 	"devDependencies": {
 		"@typescript-eslint/eslint-plugin": "^2.29.0",
 		"@typescript-eslint/parser": "^2.29.0",
 		"eslint": "^6.8.0",
+		"gh-pages": "^5.0.0",
 		"minimist": ">=1.2.2",
 		"parcel-plugin-clean-easy": "^1.0.2",
 		"parcel-plugin-static-files-copy": "^2.4.3",

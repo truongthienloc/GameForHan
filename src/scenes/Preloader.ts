@@ -29,6 +29,8 @@ export default class Preloader extends Phaser.Scene {
             'tiles/Grassland_entities(16 x 16).png',
         );
 
+        this.load.image('Lab_platformer', 'tiles/Lab_platformer(32 x 32).png');
+
         // Load characters
         this.load.atlas(
             'Han',
@@ -54,11 +56,13 @@ export default class Preloader extends Phaser.Scene {
             'maps/Map02_Grassland.json',
         );
 
+        this.load.tilemapTiledJSON('Map04_Outro', 'maps/Map04_Outro.json');
+
         // Load audiosz
         this.load.audio('start_music', 'audios/musics/start_mc.ogg');
     }
 
     create() {
-        this.scene.start('grassland');
+        this.scene.start('start');
     }
 }

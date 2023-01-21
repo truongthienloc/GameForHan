@@ -158,7 +158,7 @@ export default class IntroScene extends Phaser.Scene {
 
                 // TODO: Navigate to map 02
                 this.physics.add.overlap(this.player, endMapPoint, () => {
-                    this.scene.start('grassland');
+                    this.scene.start('outro');
                 });
             }
         }

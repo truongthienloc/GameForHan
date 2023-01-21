@@ -3,6 +3,8 @@ import ComponentService, { IComponent } from '../../utils/ComponentService';
 import StateMachine from '~/utils/StateMachine';
 import sceneEvents from '~/events/sceneEvents';
 
+import HanHitbox from './HanHitbox';
+
 import * as configMap02 from '~/configs/configMap02';
 
 let configMap: { px; mulPx; gravity };
@@ -20,6 +22,8 @@ export default class HanController implements IComponent {
     private sprite!: Sprite;
     private cursors: Cursors;
     private stateMachine: StateMachine;
+
+    private hitbox!: HanHitbox;
 
     private currentWeapon: string = 'spear';
     private speed: number = 1.5;
@@ -46,6 +50,7 @@ export default class HanController implements IComponent {
 
     init(go: Phaser.GameObjects.GameObject, components: ComponentService) {
         this.sprite = go as Sprite;
+        this.hitbox = components.findComponent(go, HanHitbox) as HanHitbox;
 
         // TODO: Config stateMachine
         this.stateMachine
@@ -195,6 +200,7 @@ export default class HanController implements IComponent {
     private attackSpearOnEnter(): void {
         this.sprite.play('Han-attack-spear');
         this.sprite.setVelocity(0);
+        this.hitbox.createSpearHitbox();
 
         this.sprite.once(
             Phaser.Animations.Events.ANIMATION_COMPLETE_KEY +

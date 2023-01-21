@@ -6,8 +6,9 @@ import Phaser from 'phaser';
 import Preloader from './scenes/Preloader';
 import StartScene from './scenes/StartScene';
 import IntroScene from './scenes/IntroScene';
-import GrasslandScene from './scenes/GrasslandScene';
+// import GrasslandScene from './scenes/GrasslandScene';
 import UIScene from './scenes/UIScene';
+import OutroScene from './scenes/OutroScene';
 
 const config: Phaser.Types.Core.GameConfig = {
     type: Phaser.AUTO,
@@ -17,10 +18,10 @@ const config: Phaser.Types.Core.GameConfig = {
         default: 'arcade',
         arcade: {
             gravity: { y: 400 },
-            debug: true,
+            // debug: true,
         },
     },
-    scene: [Preloader, StartScene, UIScene, IntroScene, GrasslandScene],
+    scene: [Preloader, StartScene, UIScene, IntroScene, OutroScene],
     scale: {
         autoCenter: Phaser.Scale.CENTER_BOTH,
     },
