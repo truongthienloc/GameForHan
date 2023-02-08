@@ -1,7 +1,16 @@
 import Phaser from 'phaser';
 
-export type Hitbox = Phaser.Types.Physics.Arcade.ImageWithDynamicBody & {
-    name: string;
+// Type of Phaser
+export type Sprite = Phaser.Physics.Arcade.Sprite;
+export type Group = Phaser.Physics.Arcade.Group;
+export type GameObject = Phaser.GameObjects.GameObject;
+
+// Type of game
+export type Hitbox = Phaser.GameObjects.Rectangle & {
+    damage: number;
+    overlap: Phaser.Physics.Arcade.Collider;
 };
 
-export type Sprite = Phaser.Physics.Arcade.Sprite;
+export interface Controller {
+    takeDamage(damage: number): void;
+}

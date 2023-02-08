@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import ComponentService, { IComponent } from '../../utils/ComponentService';
 import StateMachine from '~/utils/StateMachine';
 import sceneEvents from '~/events/sceneEvents';
+import { Controller } from '~/configs/types';
 
 import HanHitbox from './HanHitbox';
 
@@ -17,7 +18,7 @@ type Cursors = Phaser.Types.Input.Keyboard.CursorKeys & {
     dash: Key;
 };
 
-export default class HanController implements IComponent {
+export default class HanController implements IComponent, Controller {
     private scene: Phaser.Scene;
     private sprite!: Sprite;
     private cursors: Cursors;
@@ -82,6 +83,8 @@ export default class HanController implements IComponent {
     update(dt: number): void {
         this.stateMachine.update(dt);
     }
+
+    takeDamage(damage: number): void {}
 
     private disableOnEnter(): void {
         sceneEvents.once(

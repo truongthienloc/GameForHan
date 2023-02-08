@@ -6,7 +6,7 @@ import Phaser from 'phaser';
 import Preloader from './scenes/Preloader';
 import StartScene from './scenes/StartScene';
 import IntroScene from './scenes/IntroScene';
-// import GrasslandScene from './scenes/GrasslandScene';
+import GrasslandScene from './scenes/GrasslandScene';
 import UIScene from './scenes/UIScene';
 import OutroScene from './scenes/OutroScene';
 
@@ -21,7 +21,14 @@ const config: Phaser.Types.Core.GameConfig = {
             // debug: true,
         },
     },
-    scene: [Preloader, StartScene, UIScene, IntroScene, OutroScene],
+    scene: [
+        Preloader,
+        StartScene,
+        UIScene,
+        IntroScene,
+        OutroScene,
+        GrasslandScene,
+    ],
     scale: {
         autoCenter: Phaser.Scale.CENTER_BOTH,
     },

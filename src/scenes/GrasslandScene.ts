@@ -12,6 +12,7 @@ import UndeadBody from '~/characters/Undead/UndeadBody';
 import UndeadController from '~/characters/Undead/UndeadController';
 
 import HealthBar from '~/components/HealthBar';
+import HurtComponent from '~/components/HurtComponent';
 
 import * as configMap from '../configs/configMap02';
 
@@ -19,9 +20,10 @@ type Sprite = Phaser.Physics.Arcade.Sprite;
 
 export default class GrasslandScene extends Phaser.Scene {
     private player!: Sprite;
-    private damageHero!: Phaser.Physics.Arcade.Group;
+    private heroes!: Phaser.Physics.Arcade.Group;
+    // private damageHero!: Phaser.Physics.Arcade.Group;
     private enemies!: Phaser.Physics.Arcade.Group;
-    private damageEnemies!: Phaser.Physics.Arcade.Group;
+    // private damageEnemies!: Phaser.Physics.Arcade.Group;
 
     private components!: ComponentService;
 
@@ -83,8 +85,9 @@ export default class GrasslandScene extends Phaser.Scene {
             'background',
         );
 
-        // this.damageHero = this.physics.add.group();
+        this.heroes = this.physics.add.group();
         this.enemies = this.physics.add.group();
+        this.physics.add.collider(this.heroes, platform);
         this.physics.add.collider(this.enemies, platform);
 
         // TODO: Create Objects
@@ -105,15 +108,15 @@ export default class GrasslandScene extends Phaser.Scene {
                 this.components.addComponent(this.player, new HanAnims(this));
                 this.components.addComponent(
                     this.player,
-                    new HanHitbox(this.damageHero, configMap.px),
+                    new HanController(this, '02'),
                 );
                 this.components.addComponent(
                     this.player,
-                    new HanController(this, '02'),
+                    new HurtComponent(HanController),
                 );
 
                 this.cameras.main.startFollow(this.player);
-                this.physics.add.collider(this.player, platform);
+                this.heroes.add(this.player);
                 middleLayer.add(this.player);
             } else if (name === 'Undead') {
                 const undead = this.enemies.create(x, y - 50, 'Undead');
@@ -130,8 +133,6 @@ export default class GrasslandScene extends Phaser.Scene {
                 );
 
                 middleLayer.add(undead);
-
-                // undead.play('Undead-idle');
             }
         }
 
