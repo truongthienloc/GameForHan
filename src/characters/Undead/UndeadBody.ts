@@ -22,7 +22,9 @@ export default class UndeadBody implements IComponent {
     init(go: Phaser.GameObjects.GameObject, components: ComponentService) {
         this.sprite = go as Sprite;
 
-        this.sprite.setScale(configChar.UNDEAD_SCALE_CHAR);
+        this.sprite
+            .setScale(configChar.UNDEAD_SCALE_CHAR)
+            .setOrigin(0.52, 0.55);
 
         const { width: bodyWidth, height: bodyHeight } = this.sprite.body;
         this.body = {

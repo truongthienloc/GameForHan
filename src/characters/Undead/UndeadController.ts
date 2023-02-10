@@ -1,10 +1,11 @@
 import Phaser from 'phaser';
 import ComponentService, { IComponent } from '~/utils/ComponentService';
 import StateMachine from '~/utils/StateMachine';
-import { Controller } from '~/configs/types';
+import { Controller, Animation, AnimationFrame } from '~/configs/types';
 
 import UndeadBody from './UndeadBody';
 import HealthBar from '~/components/HealthBar';
+import DamageComponent from '~/components/DamageComponent';
 
 import * as configMap02 from '~/configs/configMap02';
 
@@ -21,6 +22,7 @@ export default class UndeadController implements IComponent, Controller {
     private stateBody!: StateMachine;
     private healthbar!: HealthBar;
     private target?: Phaser.GameObjects.GameObject & ComponentTransform;
+    private damageComponent!: DamageComponent;
 
     private countdown: number = 0;
     private timeChangeState: number = 2000;
@@ -28,6 +30,7 @@ export default class UndeadController implements IComponent, Controller {
     private vision: number = 3;
     private speed: number = 1.1;
     private maxHP: number = 10;
+    private damage: number = 5;
 
     private curHP: number = 10;
 
@@ -54,6 +57,10 @@ export default class UndeadController implements IComponent, Controller {
         this.stateBody = undeadBody.stateMachine;
 
         this.healthbar = components.findComponent(go, HealthBar) as HealthBar;
+        this.damageComponent = components.findComponent(
+            go,
+            DamageComponent,
+        ) as DamageComponent;
 
         this.stateMachine
             .addState('idle', {
@@ -67,6 +74,7 @@ export default class UndeadController implements IComponent, Controller {
             })
             .addState('attack', {
                 onEnter: this.attackOnEnter,
+                onExit: this.attackOnExit,
             })
             .addState('hurt', {
                 onEnter: this.hurtOnEnter,
@@ -90,27 +98,31 @@ export default class UndeadController implements IComponent, Controller {
         this.stateMachine.update(dt);
 
         // TODO: Chasing target
-        if (
-            this.target &&
-            Phaser.Math.Distance.Between(
-                this.sprite.x,
-                this.sprite.y,
-                this.target.x,
-                this.target.y,
-            ) <
-                this.vision * configMap.px &&
-            !this.stateAction.isCurrentState('stop')
-        ) {
-            this.stateAction.setState('chasing');
-        } else {
-            this.stateAction.setState('default');
+        if (!this.stateAction.isCurrentState('stop')) {
+            if (
+                this.target &&
+                Phaser.Math.Distance.Between(
+                    this.sprite.x,
+                    this.sprite.y,
+                    this.target.x,
+                    this.target.y,
+                ) <
+                    this.vision * configMap.px
+            ) {
+                this.stateAction.setState('chasing');
+            } else {
+                this.stateAction.setState('default');
+            }
         }
 
         this.stateAction.update(dt);
     }
 
     takeDamage(damage: number): void {
-        if (this.stateMachine.isCurrentState('death')) {
+        if (
+            this.stateMachine.isCurrentState('death') ||
+            this.stateMachine.isCurrentState('hurt')
+        ) {
             return;
         }
 
@@ -119,13 +131,14 @@ export default class UndeadController implements IComponent, Controller {
 
         this.healthbar.changeHP(nextHP);
         this.curHP = nextHP;
-        this.stateMachine.setState('hurt');
 
         if (nextHP === 0) {
             // TODO: handle Death
             console.log(`The Undead ${this.sprite.name} is die`);
 
             this.stateMachine.setState('death');
+        } else {
+            this.stateMachine.setState('hurt');
         }
     }
 
@@ -198,11 +211,26 @@ export default class UndeadController implements IComponent, Controller {
         this.sprite.play('Undead-attack');
         this.sprite.setVelocityX(0);
 
+        this.sprite.on(
+            Phaser.Animations.Events.ANIMATION_UPDATE,
+            this.startHit,
+            this,
+        );
+
         this.sprite.once(
             Phaser.Animations.Events.ANIMATION_COMPLETE_KEY + 'Undead-attack',
             () => {
                 this.stateMachine.setState('idle');
             },
+        );
+    }
+
+    private attackOnExit(): void {
+        this.damageComponent.removeAllHitbox();
+        this.sprite.off(
+            Phaser.Animations.Events.ANIMATION_UPDATE,
+            this.startHit,
+            this,
         );
     }
 
@@ -226,5 +254,27 @@ export default class UndeadController implements IComponent, Controller {
         this.stateAction.setState('stop');
         this.sprite.play('Undead-death');
         this.sprite.setVelocityX(0);
+    }
+
+    private startHit(anim: Animation, frame: AnimationFrame): void {
+        if (frame.textureFrame === 'Undead_attack_12.png') {
+            this.damageComponent.removeAllHitbox();
+        }
+
+        if (frame.textureFrame !== 'Undead_attack_08.png') {
+            return;
+        }
+
+        const px = configMap.px;
+        const ox = this.sprite.flipX ? 1 : 0;
+        this.damageComponent.addHitbox(
+            0,
+            0,
+            0.75 * px,
+            1.1 * px,
+            this.damage,
+            ox,
+            0.5,
+        );
     }
 }

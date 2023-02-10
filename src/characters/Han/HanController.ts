@@ -4,7 +4,7 @@ import StateMachine from '~/utils/StateMachine';
 import sceneEvents from '~/events/sceneEvents';
 import { Controller } from '~/configs/types';
 
-import HanHitbox from './HanHitbox';
+import DamageComponent from '~/components/DamageComponent';
 
 import * as configMap02 from '~/configs/configMap02';
 
@@ -24,11 +24,15 @@ export default class HanController implements IComponent, Controller {
     private cursors: Cursors;
     private stateMachine: StateMachine;
 
-    private hitbox!: HanHitbox;
+    private damageComponent!: DamageComponent;
 
     private currentWeapon: string = 'spear';
     private speed: number = 1.5;
     private jumpHigh: number = 2.1;
+    private isHurt: boolean = false;
+
+    private curHP: number = 20;
+    private maxHP: number = 20;
 
     constructor(scene: Phaser.Scene, type: string = '02') {
         this.scene = scene;
@@ -51,7 +55,10 @@ export default class HanController implements IComponent, Controller {
 
     init(go: Phaser.GameObjects.GameObject, components: ComponentService) {
         this.sprite = go as Sprite;
-        this.hitbox = components.findComponent(go, HanHitbox) as HanHitbox;
+        this.damageComponent = components.findComponent(
+            go,
+            DamageComponent,
+        ) as DamageComponent;
 
         // TODO: Config stateMachine
         this.stateMachine
@@ -80,11 +87,64 @@ export default class HanController implements IComponent, Controller {
             .setState('idle');
     }
 
+    start(): void {
+        sceneEvents.emit('set_hp', this.curHP, this.maxHP);
+    }
+
+    destroy(): void {
+        this.damageComponent.removeAllHitbox();
+    }
+
     update(dt: number): void {
         this.stateMachine.update(dt);
     }
 
-    takeDamage(damage: number): void {}
+    takeDamage(damage: number): void {
+        if (this.stateMachine.isCurrentState('death') || this.isHurt) {
+            return;
+        }
+
+        const nextHP = Phaser.Math.Clamp(this.curHP - damage, 0, this.maxHP);
+
+        this.curHP = nextHP;
+        sceneEvents.emit('set_hp', nextHP, this.maxHP);
+
+        if (nextHP === 0) {
+            this.stateMachine.setState('death');
+        } else {
+            this.isHurt = true;
+            const startColor = Phaser.Display.Color.ValueToColor(0xffffff);
+            const endColor = Phaser.Display.Color.ValueToColor(0xff0000);
+            this.scene.tweens.addCounter({
+                from: 0,
+                to: 100,
+                duration: 100,
+                repeat: 2,
+                yoyo: true,
+                onUpdate: (tween) => {
+                    const value = tween.getValue();
+
+                    const colorObject =
+                        Phaser.Display.Color.Interpolate.ColorWithColor(
+                            startColor,
+                            endColor,
+                            100,
+                            value,
+                        );
+                    const color = Phaser.Display.Color.GetColor(
+                        colorObject.r,
+                        colorObject.g,
+                        colorObject.b,
+                    );
+
+                    this.sprite.setTint(color);
+                },
+                onComplete: () => {
+                    this.isHurt = false;
+                },
+            });
+        }
+    }
 
     private disableOnEnter(): void {
         sceneEvents.once(
@@ -203,12 +263,22 @@ export default class HanController implements IComponent, Controller {
     private attackSpearOnEnter(): void {
         this.sprite.play('Han-attack-spear');
         this.sprite.setVelocity(0);
-        this.hitbox.createSpearHitbox();
+        const ox = this.sprite.flipX ? 1 : 0;
+        const hitbox = this.damageComponent.addHitbox(
+            0,
+            0,
+            1 * configMap.px,
+            0.5 * configMap.px,
+            5,
+            ox,
+            0.2,
+        );
 
         this.sprite.once(
             Phaser.Animations.Events.ANIMATION_COMPLETE_KEY +
                 'Han-attack-spear',
             () => {
+                this.damageComponent.removeHitbox(hitbox);
                 const prevState = this.stateMachine.previousStateName;
                 this.stateMachine.setState(prevState);
             },

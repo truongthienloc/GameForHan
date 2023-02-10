@@ -18,6 +18,8 @@ export default class HealthBar implements IComponent {
         this.px = px;
         this.graphicsWidth = 1.25 * this.px;
         this.graphicsHeight = 0.15 * this.px;
+        this.maxHP = maxHP;
+        this.curHP = maxHP;
     }
 
     init(go: Phaser.GameObjects.GameObject, components: ComponentService) {
@@ -40,18 +42,22 @@ export default class HealthBar implements IComponent {
 
         this.graphics.setPosition(
             this.sprite.x - this.graphicsWidth / 2,
-            this.sprite.y - this.sprite.body.height / 2 - this.graphicsHeight,
+            this.sprite.y -
+                this.sprite.body.height / 2 -
+                this.graphicsHeight -
+                5,
         );
     }
 
     public changeHP(value: number): void {
-        this.curHP = Phaser.Math.Clamp(this.curHP - value, 0, this.maxHP);
+        this.curHP = value;
 
         if (!this.graphics) return;
 
         const percent = this.curHP / this.maxHP;
 
         this.graphics.clear();
+        this.graphics.fillStyle(0xff0000);
         this.graphics.fillRect(
             0,
             0,

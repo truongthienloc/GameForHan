@@ -4,7 +4,6 @@ import StateMachine from '~/utils/StateMachine';
 
 import HanBody from '~/characters/Han/HanBody';
 import HanAnims from '~/characters/Han/HanAnims';
-import HanHitbox from '~/characters/Han/HanHitbox';
 import HanController from '~/characters/Han/HanController';
 
 import UndeadAnims from '~/characters/Undead/UndeadAnims';
@@ -13,6 +12,7 @@ import UndeadController from '~/characters/Undead/UndeadController';
 
 import HealthBar from '~/components/HealthBar';
 import HurtComponent from '~/components/HurtComponent';
+import DamageComponent from '~/components/DamageComponent';
 
 import * as configMap from '../configs/configMap02';
 
@@ -34,7 +34,17 @@ export default class GrasslandScene extends Phaser.Scene {
     init() {
         this.components = new ComponentService();
 
-        this.events.once(Phaser.Scenes.Events.SHUTDOWN, () => {}, this);
+        this.events.once(
+            Phaser.Scenes.Events.SHUTDOWN,
+            () => {
+                this.components.destroy();
+                this.scene.remove('ui');
+            },
+            this,
+        );
+
+        this.scene.run('ui');
+        this.scene.bringToTop('ui');
     }
 
     create() {
@@ -108,6 +118,10 @@ export default class GrasslandScene extends Phaser.Scene {
                 this.components.addComponent(this.player, new HanAnims(this));
                 this.components.addComponent(
                     this.player,
+                    new DamageComponent(this.enemies),
+                );
+                this.components.addComponent(
+                    this.player,
                     new HanController(this, '02'),
                 );
                 this.components.addComponent(
@@ -129,7 +143,15 @@ export default class GrasslandScene extends Phaser.Scene {
                 );
                 this.components.addComponent(
                     undead,
+                    new DamageComponent(this.heroes),
+                );
+                this.components.addComponent(
+                    undead,
                     new UndeadController(this.player),
+                );
+                this.components.addComponent(
+                    undead,
+                    new HurtComponent(UndeadController),
                 );
 
                 middleLayer.add(undead);
